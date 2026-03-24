@@ -1,0 +1,137 @@
+{
+  "name": "Hospital Appointment",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "15XNX1SYZ5_4qrs_DoBaQm15tgJMJ4xQ8fXWXtnXoFj4",
+          "mode": "list",
+          "cachedResultName": "Appointment  (Responses)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15XNX1SYZ5_4qrs_DoBaQm15tgJMJ4xQ8fXWXtnXoFj4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1455263152,
+          "mode": "list",
+          "cachedResultName": "Form responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15XNX1SYZ5_4qrs_DoBaQm15tgJMJ4xQ8fXWXtnXoFj4/edit#gid=1455263152"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "54fdedf2-d126-45a9-8f8d-cac3aa3fd641",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "ihq3z2ETFPnSj3p2",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "74cbb771-6983-46a9-ab34-2e6d4fa82aef",
+              "name": "Doctor",
+              "value": "={{    $json[\"Department\"] === \"Cardiology\" ? \"Dr. Sharma\" :   $json[\"Department\"] === \"General\" ? \"Dr. Kumar\" :   \"Dr. Default\" }}",
+              "type": "string"
+            },
+            {
+              "id": "a1e88c9d-fd69-476e-b91a-3e5df559f93a",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "8116a4ae-5210-4380-b42c-7a8a24d633f4",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{$json[\"Email\"]}}",
+        "subject": "Appointment Confirmation",
+        "emailType": "text",
+        "message": "=Hello {{$json[\"Patient Name\"]}},  \nYour appointment is confirmed.  \n\nDoctor: {{$json[\"Doctor\"]}} \nDate: {{$json[\"Preferred Date\"]}}  \n\nThank you, \nHospital Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "c5f4481b-cf9f-4c32-9521-6601c190732b",
+      "name": "Send a message",
+      "webhookId": "eea0a58e-7167-4a62-b17c-866d44acd838",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "takhBjEry5353RIS",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "8767e64b-0686-4370-ad15-27af3308ab69",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "15404a3f5a7ab67ba4a0ec4b86c515348d2f203e223ad412bf65fdb5c01af002"
+  },
+  "id": "8C4CPZEWLlfiUmfD",
+  "tags": []
+}
